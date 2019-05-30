@@ -1,0 +1,23 @@
+
+<div class="container">
+<form (submit)="onSubmit()">
+    <input name="search" [(ngModel)]="search">
+
+    <button>submit</button>
+ </form>
+</div>
+
+<section>
+
+  <div class="columns is-multiline">
+
+    <div *ngFor="let movie of list" class="column is-one-quarter">
+
+      <div class="box" (click)="onClick(movie)">{{movie.Title}}</div>
+
+    </div>
+  </div>
+
+  <div *ngFor="let page of pages; let i = index" class="page">{{page}}</div>
+  
+</section>

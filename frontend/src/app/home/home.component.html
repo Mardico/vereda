@@ -1,9 +1,20 @@
 
 <div class="container">
-<form (submit)="onSubmit()">
-    <input name="search" [(ngModel)]="search">
 
-    <button>submit</button>
+  <p>Search your {{searchType}}</p>
+
+<form class="form" (submit)="onSubmit()">
+    <input class="input" name="search" [(ngModel)]="search">
+
+    <p *ngIf="!isValid" class="help is-danger">this field is required</p>
+
+    <a *ngIf="searchType == 'Movie';" (click)="changeSearchType()" class="small"> or maybe a TV Show?</a>
+    <a *ngIf="searchType == 'TV Show';" (click)="changeSearchType()" class="small"> or maybe a Movie?</a>
+
+    <div>
+      <button class="button is-primary">submit</button>
+    </div>
+
  </form>
 </div>
 
@@ -13,11 +24,15 @@
 
     <div *ngFor="let movie of list" class="column is-one-quarter">
 
-      <div class="box" (click)="onClick(movie)">{{movie.Title}}</div>
+      <div class="box" (click)="onClick(movie)">
+        <img src="{{movie.Poster}}" alt="">
+        <p>{{movie.Title}}</p>
+        <p>{{movie.Year}}</p>
+      </div>
 
     </div>
   </div>
 
-  <div *ngFor="let page of pages; let i = index" class="page">{{page}}</div>
+  <span *ngFor="let page of pages; let i = index" class="page" (click)="paginate(page)">{{page}}</span>
   
 </section>

@@ -1,40 +1,51 @@
 
-<div class="container">
-
-  <p>Search your {{searchType}}</p>
-
-<form class="form" (submit)="onSubmit()">
-    <input class="input" name="search" [(ngModel)]="search">
-
-    <p *ngIf="!isValid" class="help is-danger">this field is required</p>
-
-    <a *ngIf="searchType == 'Movie';" (click)="changeSearchType()" class="small"> or maybe a TV Show?</a>
-    <a *ngIf="searchType == 'TV Show';" (click)="changeSearchType()" class="small"> or maybe a Movie?</a>
-
-    <div>
-      <button class="button is-primary">submit</button>
+<section class="search-section {{active}}">
+    <div class="container is-fluid">
+    
+      <div class="form-box">
+        <p class="title">WannaBe Avenger</p>
+        <p class="sub-title">Search a {{searchType}}</p>
+      
+      <form class="form" (submit)="onSubmit()">
+        
+        <div class="field has-addons">
+          <div class="control is-expanded">
+            <input class="input is-fullwidth" name="search" [(ngModel)]="search">
+          </div>
+          <div class="control">
+            <button (click)="activeSearch()" class="button is-primary">submit</button>
+          </div>
+        </div>
+        <p *ngIf="!isValid" class="help is-danger">this field is required</p>
+      
+          <a *ngIf="searchType == 'Movie';" (click)="changeSearchType()" class="small"> or maybe a <span style="color: #9bffc4;">TV Show?</span></a>
+          <a *ngIf="searchType == 'TV Show';" (click)="changeSearchType()" class="small"> or maybe a Movie?</a>
+       </form>
+      </div>
     </div>
-
- </form>
-</div>
+</section>
 
 <section>
-
-  <div class="columns is-multiline">
-
-    <div *ngFor="let movie of list" class="column is-one-quarter">
-
-      <div class="box" (click)="onClick(movie)">
-        <div class="img has-text-centered">
-          <img src="{{movie.Poster}}" alt="imagem não disponível">
+  <div class="container is-fluid">
+    
+      <div class="columns is-multiline">
+    
+        <div *ngFor="let movie of list" class="column is-one-quarter">
+    
+          <div class="box" (click)="onClick(movie)">
+            <div class="img has-text-centered">
+              <img src="{{movie.Poster}}" alt="Imagem não disponível">
+            </div>
+            <p class="title">{{movie.Title}}</p>
+            <p class="sub-title">{{movie.Year}}</p>
+          </div>
+    
         </div>
-        <p class="title">{{movie.Title}}</p>
-        <p class="sub-title">{{movie.Year}}</p>
       </div>
-
-    </div>
+    
+      <div class="paginate">
+        <span *ngFor="let page of pages; let i = index" class="page" (click)="paginate(page, i)">{{page}}</span>
+      </div>
+      
   </div>
-
-  <span *ngFor="let page of pages; let i = index" class="page" (click)="paginate(page)">{{page}}</span>
-  
 </section>

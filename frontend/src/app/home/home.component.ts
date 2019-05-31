@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
+import { SelectorMatcher } from '@angular/compiler';
+import { AngularWaitBarrier } from 'blocking-proxy/built/lib/angular_wait_barrier';
 
 @Component({
   selector: 'app-home',
@@ -19,6 +21,9 @@ export class HomeComponent implements OnInit {
   public list: any = [];
   public movies: any = [];
 
+  public active: any;
+  public pageActive: any;
+  public noImage: boolean = false;
   public isValid: Boolean = true;
   public searchType: String = "Movie"
   public typeParam: String = "type=movie";
@@ -28,11 +33,14 @@ export class HomeComponent implements OnInit {
   ) { }
 
   ngOnInit() {
+    this.active = ""
+    this.pageActive = ""
   }
 
   public onSubmit() {
     let str;
     let format: String = "";
+    this.pages = [];
 
     if(this.search != "" && this.search != null && typeof this.search != undefined) {
 
@@ -50,6 +58,7 @@ export class HomeComponent implements OnInit {
  
       this.http.get(this.videoApiUrl + this.apikey + this.typeParam + this.newStr).subscribe((movies:any) => {
         this.list = movies.Search;
+
         let size = 0;
         size = Math.ceil(movies.totalResults / 10);
         for (let i = 1; i <= size; i++){
@@ -77,12 +86,16 @@ export class HomeComponent implements OnInit {
     console.log(e.imdbID);
   }
 
-  public paginate(e) {
+  public paginate(e, i) {
     let page = "&page=" + e
 
     this.http.get(this.videoApiUrl + this.apikey + this.typeParam + this.newStr + page).subscribe((movies:any) => {
 
       this.list = movies.Search;
     });
+  }
+
+  public activeSearch() {
+    this.active = "active"
   }
 }

@@ -44,7 +44,6 @@ export class HomeComponent implements OnInit {
           format += str[i] + '+'
         }
         this.newStr = '&s=' + format.substr(0, format.length - 1)
-        // console.log(this.newStr.substr(0, this.newStr.length - 1))
       } else {
         this.newStr = '&s=' + this.search;
       }

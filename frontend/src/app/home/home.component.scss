@@ -7,3 +7,39 @@
 
     margin: 0 10px
 }
+
+.box {
+    min-height:470px;
+
+    img {
+        max-height:350px;
+    }
+    
+    .title {
+        font-size:18px;
+        font-weight: bold;
+        padding: 0 auto;
+        margin: 0 auto;
+        color: #9bffc4;
+    }
+
+    .sub-title{
+        font-size:14px;
+        padding:5 auto;
+    }
+
+    @media (max-width:768px) {
+        text-align:center;
+        width: 60%;
+        margin:auto;
+
+        .title {
+            font-size:22px;
+            color: red;
+        }
+
+        .sub-title {
+
+        }
+    }
+}

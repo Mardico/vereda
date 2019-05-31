@@ -25,9 +25,11 @@
     <div *ngFor="let movie of list" class="column is-one-quarter">
 
       <div class="box" (click)="onClick(movie)">
-        <img src="{{movie.Poster}}" alt="">
-        <p>{{movie.Title}}</p>
-        <p>{{movie.Year}}</p>
+        <div class="img has-text-centered">
+          <img src="{{movie.Poster}}" alt="imagem não disponível">
+        </div>
+        <p class="title">{{movie.Title}}</p>
+        <p class="sub-title">{{movie.Year}}</p>
       </div>
 
     </div>

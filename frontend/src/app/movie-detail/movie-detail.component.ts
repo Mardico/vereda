@@ -2,6 +2,7 @@ import { Component, OnInit, Sanitizer } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
 import { DomSanitizer } from '@angular/platform-browser';
+import { map } from 'rxjs/operators';
 
 @Component({
   selector: 'app-movie-detail',
@@ -12,7 +13,7 @@ export class MovieDetailComponent implements OnInit {
 
   private apikey = "/?apikey=34c602f9&"
   private videoApiUrl = "http://www.omdbapi.com"
-  private apiUrl = "localhost:3000/"
+  private apiUrl = "localhost:3000/movie/rate"
 
   public movie: any;
   public detail: any = [];
@@ -44,8 +45,14 @@ export class MovieDetailComponent implements OnInit {
     return this.sanitizer.bypassSecurityTrustStyle(`url(${image})`);
   }
 
-  public sendRate(e, i) {
-    console.log(e, i);
+  public sendRate(id, r) {
+    console.log(id, r)
+    this.http.post(this.apiUrl, {movie_id: id, rate: r})
+    .pipe(
+      map((response:Response) => {
+
+      }
+    ))
   }
 
 }

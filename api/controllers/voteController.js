@@ -7,9 +7,9 @@ module.exports.saveVote = function(req, res, next) {
 
     var movieRate = new VoteModel()
 
+    movieRate.rate = req.body.rate;   
     movieRate.movie_id = req.body.movie_id
-    movieRate.rate = req.body.rate;    
-
+    
     movieRate.save((err, result) => {
         if (err) {
             return res.status(404).json({

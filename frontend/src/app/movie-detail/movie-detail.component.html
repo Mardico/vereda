@@ -31,7 +31,7 @@
       
     </div>
     <div class="columns">
-      <span class="rate" *ngFor="let rate of rates" (click)="sendRate(rate, detail.imdbID)">{{rate}}</span>
+      <span class="rate" *ngFor="let rate of rates" (click)="sendRate(detail.imdbID, rate)">{{rate}}</span>
     </div>
 
   </div>

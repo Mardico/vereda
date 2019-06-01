@@ -25,26 +25,22 @@
     </div>
 </section>
 
-<section>
+<section class="list-section">
   <div class="container is-fluid">
-    
       <div class="columns is-multiline">
-    
         <div *ngFor="let movie of list" class="column is-one-quarter">
-    
-          <div class="box" (click)="onClick(movie)">
+          <div class="box" (click)="getMovie(movie)">
             <div class="img has-text-centered">
               <img src="{{movie.Poster}}" alt="Imagem não disponível">
             </div>
             <p class="title">{{movie.Title}}</p>
             <p class="sub-title">{{movie.Year}}</p>
           </div>
-    
         </div>
       </div>
     
       <div class="paginate">
-        <span *ngFor="let page of pages; let i = index" class="page" (click)="paginate(page, i)">{{page}}</span>
+        <span *ngFor="let page of pages; let i = index" class="page" (click)="paginate(page)">{{page}}</span>
       </div>
       
   </div>

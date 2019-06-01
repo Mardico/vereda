@@ -7,13 +7,13 @@ import { HttpClientModule } from '@angular/common/http';
 
 import { AppComponent } from './app.component';
 import { HomeComponent } from './home/home.component';
-import { MoviesListComponent } from './movies-list/movies-list.component';
+import { MovieDetailComponent } from './movie-detail/movie-detail.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     HomeComponent,
-    MoviesListComponent
+    MovieDetailComponent
   ],
   imports: [
     BrowserModule,

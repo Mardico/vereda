@@ -1,8 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { NgForm } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
-import { SelectorMatcher } from '@angular/compiler';
-import { AngularWaitBarrier } from 'blocking-proxy/built/lib/angular_wait_barrier';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-home',
@@ -14,12 +12,13 @@ export class HomeComponent implements OnInit {
   public search: String;
   private apikey = "/?apikey=34c602f9&"
   private videoApiUrl = "http://www.omdbapi.com"
-  private apiUrl = "localhost:3000/"
+  private detailPage = "/detail/"
   
   public newStr: String = "";
   public pages: any = [];
   public list: any = [];
   public movies: any = [];
+  public movie: String;
 
   public active: any;
   public pageActive: any;
@@ -30,6 +29,7 @@ export class HomeComponent implements OnInit {
 
   constructor(
     private http: HttpClient
+    ,private router: Router
   ) { }
 
   ngOnInit() {
@@ -67,7 +67,6 @@ export class HomeComponent implements OnInit {
       });
     } else {
       this.isValid = false;
-      console.log(this.isValid)
     }
   }
 
@@ -82,15 +81,32 @@ export class HomeComponent implements OnInit {
     }
   }
 
-  public onClick(e) {
-    console.log(e.imdbID);
+  public getMovie(e) {
+
+    let title: String = e.Title;
+    let param: String = "";
+    let urlParam: String = "";
+
+    // console.log(title);
+
+    if(e.Title.includes(" ")) {
+      let split = title.split(" ");
+
+      for(let i = 0; i < split.length; i++) {
+        param += split[i] + '+';
+      }
+
+      this.movie = param.substr(0, param.length - 1);
+
+    } else {this.movie = urlParam}
+
+      this.router.navigateByUrl(this.detailPage + this.movie);
   }
 
-  public paginate(e, i) {
+  public paginate(e) {
     let page = "&page=" + e
 
     this.http.get(this.videoApiUrl + this.apikey + this.typeParam + this.newStr + page).subscribe((movies:any) => {
-
       this.list = movies.Search;
     });
   }

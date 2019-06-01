@@ -24,7 +24,7 @@ module.exports.saveVote = function(req, res, next) {
 
 module.exports.countVotes = function(req, res, next) {
     
-    VoteModel.find({movie_id: "eoq"})
+    VoteModel.find({movie_id: req.body._id})
     // .count()
     .exec((err, response) => {
         res.status(200).json(response);

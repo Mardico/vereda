@@ -2,30 +2,38 @@
 
   <div class="container is-fluid">
     <div class="columns is-mobile">
-      
+        
       <div class="column">
+        <div class="box ">
+          <div class="poster" [style.background-image]="getBackground(detail.Poster)"></div>
+          <div>
+            <p>{{detail.Title}}</p>
+          </div>
+          <div>
+            <span>{{detail.Released}}</span>
+            <span>{{detail.Runtime}}</span>
+          </div>
+          <div>
+            {{detail.Plot}}
+          </div>
+          <p><b>Actors</b>{{detail.Actors}}</p>
+          <p><b>Genre</b>{{detail.Genre}}</p>
+          <p><b>Director</b>{{detail.Director}}</p>
+          <p><b>Awards</b>{{detail.Awards}}</p>
+        </div>
+      </div>
+      <!-- <div class="column poster">
         <div class="has-text-centered">
           <img src="{{detail.Poster}}" alt="">
         </div>
-      </div>
+      </div> -->
 
-      <div class="column">
-        <div class="box">
-  
-          <ul>
-            <li>{{detail.Released}}</li>
-            <li>{{detail.Genre}}</li>
-            <li>{{detail.Director}}</li>
-            <li>{{detail.Actors}}</li>
-            <li>{{detail.Plot}}</li>
-            <li>{{detail.Writer}}</li>
-            <li>{{detail.Awards}}</li>
-            <li>{{detail.Runtime}}</li>
-          </ul>
-  
-        </div>
-      </div>
+      
     </div>
+    <div class="columns">
+      <span class="rate" *ngFor="let rate of rates" (click)="sendRate(rate, detail.imdbID)">{{rate}}</span>
+    </div>
+
   </div>
 
 </section>

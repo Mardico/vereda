@@ -1,6 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Sanitizer } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
+import { DomSanitizer } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-movie-detail',
@@ -15,10 +16,12 @@ export class MovieDetailComponent implements OnInit {
 
   public movie: any;
   public detail: any = [];
+  public rates: any = [1, 2, 3, 4, 5]
 
   constructor(
     private route: ActivatedRoute
     ,private http: HttpClient
+    ,private sanitizer : DomSanitizer
   ) { 
   }
 
@@ -28,10 +31,21 @@ export class MovieDetailComponent implements OnInit {
 
       this.http.get(this.videoApiUrl + this.apikey + this.movie)
       .subscribe((movie:any) => {
+        this.sanitizer.bypassSecurityTrustStyle(movie.Poster);
         this.detail = movie;
+
+
         console.log(this.detail);
       });
     });
+  }
+
+  public getBackground(image) {
+    return this.sanitizer.bypassSecurityTrustStyle(`url(${image})`);
+  }
+
+  public sendRate(e, i) {
+    console.log(e, i);
   }
 
 }

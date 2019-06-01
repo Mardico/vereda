@@ -14,5 +14,4 @@ router.get('/rate', ctrlVotes.countVotes)
 //POST routes
 router.post('/movie/rate', ctrlVotes.saveVote)
 
-
 module.exports = router

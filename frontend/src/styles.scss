@@ -1,12 +1,11 @@
 /* You can add global styles to this file, and also import other style files */
 @import "../node_modules/bulma/bulma.sass";
-@import url('https://fonts.googleapis.com/css?family=Lato&display=swap');
+@import url('https://fonts.googleapis.com/css?family=Lato:300,400,900&display=swap');
 
 $green: #9bffc4;
 $black: #2d2d2d;
 $white: #fefefe;
 $border-green: 1px solid $green;
-
 
 body {
     background-color: $black;
@@ -118,8 +117,33 @@ section {
 }
 
 .detail-section{
+    max-height:800px;
+    display:relative;
+
     .box {
-        background:transparent;
-        border: $border-green;
+        background-color:transparent;
+        background-image: linear-gradient(to left, rgba(0,0,0,0), rgba(0,0,0,1));
+    }
+
+    li{
+        color:$white;
+        margin: 15px 0;
+        p{
+            margin: 5px;
+            color:$green;
+            font-weight:900;
+            font-style: italic;
+        }
+    }
+
+    .poster{
+        background-size: cover;
+        background-repeat: no-repeat;
+    }
+
+    .rate{
+        padding:10px;
+        border:$border-green;
+        margin:10px;
     }
 }

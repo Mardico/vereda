@@ -4,21 +4,24 @@ const mongoose = require('mongoose')
 const cors = require('cors')
 const bodyparser = require("body-parser")
 
-var ctrlVotes = require('./controllers/voteController')
-
 //Connection with mongoDB
 var db = mongoose.connect('mongodb://localhost:27017/vereda-avenger', { useNewUrlParser: true }, function(err, res){
     if(err) console.log('error')
     console.log('connection succesfull')
 })
 
-app.use(cors());
+var corsOptions = {
+    origin: 'http://localhost:4200',
+    optionsSuccessStatus: 200
+  }
+
+app.use(cors(corsOptions));
 app.use(bodyparser.urlencoded({extended: true}))
 app.use(bodyparser.json())
 var routesApi = require('./routes/index')
 
 app.listen( 3000, () => {
-    app.use('/', routesApi)
+    app.use('/api', routesApi)
 })
 
 //error handlers

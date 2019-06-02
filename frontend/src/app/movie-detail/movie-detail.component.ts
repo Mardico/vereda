@@ -3,6 +3,7 @@ import { ActivatedRoute } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
 import { DomSanitizer } from '@angular/platform-browser';
 import { map } from 'rxjs/operators';
+import { WebService } from '../service/webservice';
 
 @Component({
   selector: 'app-movie-detail',
@@ -10,10 +11,6 @@ import { map } from 'rxjs/operators';
   styleUrls: ['./movie-detail.component.scss']
 })
 export class MovieDetailComponent implements OnInit {
-
-  private apikey = "/?apikey=34c602f9&"
-  private videoApiUrl = "http://www.omdbapi.com"
-  private apiUrl = "localhost:3000/movie/rate"
 
   public movie: any;
   public detail: any = [];
@@ -23,6 +20,7 @@ export class MovieDetailComponent implements OnInit {
     private route: ActivatedRoute
     ,private http: HttpClient
     ,private sanitizer : DomSanitizer
+    ,private webservice: WebService
   ) { 
   }
 
@@ -30,29 +28,40 @@ export class MovieDetailComponent implements OnInit {
     this.route.paramMap.subscribe((param:any) => {
       this.movie = "&t=" + param.params.movie;
 
-      this.http.get(this.videoApiUrl + this.apikey + this.movie)
-      .subscribe((movie:any) => {
+      this.webservice.getMovie(this.movie).subscribe((movie:any) => {
         this.sanitizer.bypassSecurityTrustStyle(movie.Poster);
         this.detail = movie;
 
-
-        console.log(this.detail);
+        this.getRate(this.detail.imdbID);
       });
     });
+  }
+
+  public getRate(param){
+    this.webservice.getRate({_id: param}).subscribe(() => {})
   }
 
   public getBackground(image) {
     return this.sanitizer.bypassSecurityTrustStyle(`url(${image})`);
   }
 
-  public sendRate(id, r) {
-    console.log(id, r)
-    this.http.post(this.apiUrl, {movie_id: id, rate: r})
-    .pipe(
-      map((response:Response) => {
+  public sendRate(id: any, r: any) {
 
-      }
-    ))
+    let param = {
+      movie_id: id,
+      rate: r
+    }
+    console.log(param);
+
+    this.webservice.sendRate(param)
+    .subscribe(() => {
+    })
+
+    // return this.http.post(this.apiUrl, param)
+    // .pipe(
+    //   map((response:Response) => {
+
+    //   })
   }
 
 }

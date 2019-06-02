@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
+import { WebService } from '../service/webservice';
 
 @Component({
   selector: 'app-home',
@@ -9,27 +10,26 @@ import { Router } from '@angular/router';
 })
 export class HomeComponent implements OnInit {
 
-  public search: String;
-  private apikey = "/?apikey=34c602f9&"
-  private videoApiUrl = "http://www.omdbapi.com"
+  public search: string;
   private detailPage = "/detail/"
   
-  public newStr: String = "";
+  public newStr: string = "";
   public pages: any = [];
   public list: any = [];
   public movies: any = [];
-  public movie: String;
+  public movie: string;
 
   public active: any;
   public pageActive: any;
   public noImage: boolean = false;
   public isValid: Boolean = true;
-  public searchType: String = "Movie"
-  public typeParam: String = "type=movie";
+  public searchType: string = "Movie"
+  public typeParam: string = "&type=movie";
 
   constructor(
     private http: HttpClient
     ,private router: Router
+    ,private webservice: WebService
   ) { }
 
   ngOnInit() {
@@ -39,7 +39,7 @@ export class HomeComponent implements OnInit {
 
   public onSubmit() {
     let str;
-    let format: String = "";
+    let format: string = "";
     this.pages = [];
 
     if(this.search != "" && this.search != null && typeof this.search != undefined) {
@@ -51,13 +51,13 @@ export class HomeComponent implements OnInit {
         for(let i = 0; i < str.length; i++){
           format += str[i] + '+'
         }
-        this.newStr = '&s=' + format.substr(0, format.length - 1)
+        this.newStr = this.typeParam + '&s=' + format.substr(0, format.length - 1)
       } else {
-        this.newStr = '&s=' + this.search;
+        this.newStr = this.typeParam + '&s=' + this.search;
       }
  
-      this.http.get(this.videoApiUrl + this.apikey + this.typeParam + this.newStr).subscribe((movies:any) => {
-        this.list = movies.Search;
+      this.webservice.listMovies(this.newStr).subscribe((movies:any) => {
+        this.list = movies.Search
 
         let size = 0;
         size = Math.ceil(movies.totalResults / 10);
@@ -65,6 +65,10 @@ export class HomeComponent implements OnInit {
           this.pages.push(i);
         }
       });
+      // this.http.get(this.videoApiUrl + this.apikey + this.typeParam + this.newStr)
+      //   .subscribe((movies:any) => {
+      //   this.list = movies.Search;
+      // });
     } else {
       this.isValid = false;
     }
@@ -74,20 +78,18 @@ export class HomeComponent implements OnInit {
 
     if(this.searchType == "Movie") {
       this.searchType = "TV Show";
-      this.typeParam = "type=series"
+      this.typeParam = "&type=series"
     } else {
       this.searchType = "Movie";
-      this.typeParam = "type=movie"
+      this.typeParam = "&type=movie"
     }
   }
 
   public getMovie(e) {
 
-    let title: String = e.Title;
-    let param: String = "";
-    let urlParam: String = "";
-
-    // console.log(title);
+    let title: string = e.Title;
+    let param: string = "";
+    let urlParam: string = "";
 
     if(e.Title.includes(" ")) {
       let split = title.split(" ");
@@ -106,7 +108,7 @@ export class HomeComponent implements OnInit {
   public paginate(e) {
     let page = "&page=" + e
 
-    this.http.get(this.videoApiUrl + this.apikey + this.typeParam + this.newStr + page).subscribe((movies:any) => {
+    this.webservice.paginate(this.typeParam + this.newStr + page).subscribe((movies:any) => {
       this.list = movies.Search;
     });
   }

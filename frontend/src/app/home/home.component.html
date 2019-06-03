@@ -1,5 +1,5 @@
 
-<section class="search-section {{active}}">
+<section class="search-section" [class.active]="active">
     <div class="container is-fluid">
     
       <div class="form-box">
@@ -25,22 +25,34 @@
     </div>
 </section>
 
+<div class="container spoiler" *ngIf="isAvenger" >
+  <div class="has-text-centered">
+    <div (click)="isAvg()">Welcome, want some avenger spoiler? Get here</div>
+    <div *ngIf="wantSpoiler" (click)="showSpoiler()">Are you sure? Tony wouldn't be proud of it...</div>
+    <div *ngIf="reallyWantSpoiler">
+      <p> Sorry, but...</p>
+      <img src="http://images6.fanpop.com/image/photos/42700000/Captain-America-Avengers-Endgame-2019-avengers-infinity-war-1-and-2-42773457-540-300.gif" alt="Sorry">
+    </div>
+  </div>
+</div>
+
 <section class="list-section">
   <div class="container is-fluid">
+
       <div class="columns is-multiline">
-        <div *ngFor="let movie of list" class="column is-one-quarter">
+        <div *ngFor="let movie of list" class="column is-one-third">
           <div class="box" (click)="getMovie(movie)">
             <div class="img has-text-centered">
               <img src="{{movie.Poster}}" alt="Imagem não disponível">
             </div>
-            <p class="title">{{movie.Title}}</p>
+            <p class="title has-margin">{{movie.Title}}</p>
             <p class="sub-title">{{movie.Year}}</p>
           </div>
         </div>
       </div>
     
-      <div class="paginate">
-        <span *ngFor="let page of pages; let i = index" class="page" (click)="paginate(page)">{{page}}</span>
+      <div class="has-text-centered has-large-margin">
+        <span *ngFor="let page of pages; let i = index" class="number-square has-margin" (click)="paginate(page)" [class.active]="actualPageIndex == page">{{page}}</span>
       </div>
       
   </div>

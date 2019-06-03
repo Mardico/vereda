@@ -15,25 +15,30 @@ export class HomeComponent implements OnInit {
   
   public newStr: string = "";
   public pages: any = [];
+  public page: any;
   public list: any = [];
   public movies: any = [];
   public movie: string;
 
-  public active: any;
+  public active: boolean = false;
   public pageActive: any;
+  public actualPageIndex: any;
   public noImage: boolean = false;
   public isValid: Boolean = true;
   public searchType: string = "Movie"
   public typeParam: string = "&type=movie";
 
+  public isAvenger          :boolean = false;
+  public wantSpoiler        :boolean = false;
+  public reallyWantSpoiler  :boolean = false;
+
   constructor(
-    private http: HttpClient
-    ,private router: Router
+    private router: Router
     ,private webservice: WebService
   ) { }
 
   ngOnInit() {
-    this.active = ""
+    this.active = false;
     this.pageActive = ""
   }
 
@@ -43,8 +48,8 @@ export class HomeComponent implements OnInit {
     this.pages = [];
 
     if(this.search != "" && this.search != null && typeof this.search != undefined) {
-
       this.isValid = true;
+      this.active = true;
       if(this.search.includes(' ')){
         str = this.search.split(' ')
   
@@ -62,15 +67,24 @@ export class HomeComponent implements OnInit {
         size = Math.ceil(movies.totalResults / 10);
         for (let i = 1; i <= size; i++){
           this.pages.push(i);
+
         }
       });
-      // this.http.get(this.videoApiUrl + this.apikey + this.typeParam + this.newStr)
-      //   .subscribe((movies:any) => {
-      //   this.list = movies.Search;
-      // });
     } else {
       this.isValid = false;
     }
+
+    if(this.newStr.includes("avenger")){
+      this.isAvenger = true;
+    }
+  }
+
+  public isAvg() {
+    this.wantSpoiler = true;
+  }
+
+  public showSpoiler() {
+    this.reallyWantSpoiler = true;
   }
 
   public changeSearchType(){
@@ -105,14 +119,11 @@ export class HomeComponent implements OnInit {
   }
 
   public paginate(e) {
-    let page = "&page=" + e
+    this.page = "&page=" + e
 
-    this.webservice.paginate(this.typeParam + this.newStr + page).subscribe((movies:any) => {
+    this.actualPageIndex = e;
+    this.webservice.paginate(this.newStr + this.page).subscribe((movies:any) => {
       this.list = movies.Search;
     });
-  }
-
-  public activeSearch() {
-    this.active = "active"
   }
 }

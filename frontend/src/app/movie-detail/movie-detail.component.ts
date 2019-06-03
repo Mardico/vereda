@@ -1,8 +1,6 @@
 import { Component, OnInit, Sanitizer } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { HttpClient } from '@angular/common/http';
 import { DomSanitizer } from '@angular/platform-browser';
-import { map } from 'rxjs/operators';
 import { WebService } from '../service/webservice';
 
 @Component({
@@ -17,6 +15,7 @@ export class MovieDetailComponent implements OnInit {
   public rates: any = [1, 2, 3, 4, 5]
   public totalRate: any = [];
   public average: any;
+  public hasVoted: boolean = false;
 
   constructor(
     private route: ActivatedRoute
@@ -43,12 +42,15 @@ export class MovieDetailComponent implements OnInit {
     this.webservice.getRate(param).subscribe((result:any) => {
      this.totalRate = result;
      let sum = 0;
-     let average = 0;
+     let average = 0.0;
      for(let i = 0; i < this.totalRate.length; i++) {
         sum += this.totalRate[i].rate;
-        average = Math.ceil(sum / this.totalRate.length)
+        average = sum / this.totalRate.length;
+        // Math.round(sum / this.totalRate.length)
       }
-      this.average = average
+      
+      this.average = Math.round(average * 10) / 10;
+      console.log(Math.round(this.average * 10) / 10)
     })
   }
 
@@ -62,7 +64,11 @@ export class MovieDetailComponent implements OnInit {
       movie_id: id,
       rate: r
     }
-    this.webservice.sendRate(param).subscribe(() => {});
+    this.webservice.sendRate(param).subscribe(() => {
+      this.hasVoted = true;
+
+      this.getRate(this.detail.imdbID);
+    });
   }
 
 }

@@ -55,10 +55,9 @@ export class HomeComponent implements OnInit {
       } else {
         this.newStr = this.typeParam + '&s=' + this.search;
       }
- 
+
       this.webservice.listMovies(this.newStr).subscribe((movies:any) => {
         this.list = movies.Search
-
         let size = 0;
         size = Math.ceil(movies.totalResults / 10);
         for (let i = 1; i <= size; i++){
@@ -89,7 +88,7 @@ export class HomeComponent implements OnInit {
 
     let title: string = e.Title;
     let param: string = "";
-    let urlParam: string = "";
+    // let urlParam: string = "";
 
     if(e.Title.includes(" ")) {
       let split = title.split(" ");
@@ -100,7 +99,7 @@ export class HomeComponent implements OnInit {
 
       this.movie = param.substr(0, param.length - 1);
 
-    } else {this.movie = urlParam}
+    } else {this.movie = title}
 
       this.router.navigateByUrl(this.detailPage + this.movie);
   }

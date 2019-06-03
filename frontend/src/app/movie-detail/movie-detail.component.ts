@@ -15,10 +15,11 @@ export class MovieDetailComponent implements OnInit {
   public movie: any;
   public detail: any = [];
   public rates: any = [1, 2, 3, 4, 5]
+  public totalRate: any = [];
+  public average: any;
 
   constructor(
     private route: ActivatedRoute
-    ,private http: HttpClient
     ,private sanitizer : DomSanitizer
     ,private webservice: WebService
   ) { 
@@ -32,13 +33,23 @@ export class MovieDetailComponent implements OnInit {
         this.sanitizer.bypassSecurityTrustStyle(movie.Poster);
         this.detail = movie;
 
-        this.getRate(this.detail.imdbID);
+        this.getRate(movie.imdbID);
       });
     });
   }
 
-  public getRate(param){
-    this.webservice.getRate({_id: param}).subscribe(() => {})
+  public getRate(param:any){
+
+    this.webservice.getRate(param).subscribe((result:any) => {
+     this.totalRate = result;
+     let sum = 0;
+     let average = 0;
+     for(let i = 0; i < this.totalRate.length; i++) {
+        sum += this.totalRate[i].rate;
+        average = Math.ceil(sum / this.totalRate.length)
+      }
+      this.average = average
+    })
   }
 
   public getBackground(image) {
@@ -51,17 +62,7 @@ export class MovieDetailComponent implements OnInit {
       movie_id: id,
       rate: r
     }
-    console.log(param);
-
-    this.webservice.sendRate(param)
-    .subscribe(() => {
-    })
-
-    // return this.http.post(this.apiUrl, param)
-    // .pipe(
-    //   map((response:Response) => {
-
-    //   })
+    this.webservice.sendRate(param).subscribe(() => {});
   }
 
 }
